@@ -1,0 +1,69 @@
+@Managed
+interface VersionList {
+    List<String> getVersions()
+    void setVersions(List<String> versions)
+}
+
+@Managed
+interface Tools {
+    //ModelMap<VersionList> getVersionList()
+    List<String> getVersions()
+    void setVersions(List<String> versions)
+    //void setVersions(ModelMap<Versions> versions)
+}
+
+@Managed
+interface Vendor {
+    ModelMap<Tools> getTools()
+    //void setTools(ModelMap<Tools> tools)
+}
+
+class Vendor1Plugin extends RuleSource {
+    @Model
+    void toolversions(ModelMap<Vendor> vendors) {}
+
+    @Mutate
+    void createVendors(ModelMap<Vendor> vendors) {
+        vendors.create('vendor1')
+        vendors.create('vendor2')
+    }
+
+    @Defaults
+    void createVendor1Tools(@Path('toolversions.vendor1.tools') ModelMap<Tools> tools) {
+        tools.create('tool1')
+        tools.create('tool2')
+    }
+
+    @Defaults
+    void createVendor2Tools(@Path('toolversions.vendor2.tools') ModelMap<Tools> tools) {
+        tools.create('toolA')
+        tools.create('toolB')
+    }
+}
+
+apply plugin: Vendor1Plugin
+
+model {
+    toolversions {
+        vendor1 {
+            tools {
+                tool1 {
+                    versions = ['a', 'b']
+                }
+                tool2 {
+                    //versions = ['m', 'n']
+                }
+            }
+        }
+        vendor2 {
+            tools {
+                toolA {
+                    //versions = ['z', 'g']
+                }
+                toolB {
+                    //versions = ['t', 'k']
+                }
+            }
+        }
+    }
+}

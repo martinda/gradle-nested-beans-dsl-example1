@@ -1,0 +1,7 @@
+# Gradle
+build/
+.gradle/
+
+# Vim
+*.swp
+Session.vim
