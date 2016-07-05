@@ -1,21 +1,12 @@
 @Managed
-interface VersionList {
-    List<String> getVersions()
-    void setVersions(List<String> versions)
-}
-
-@Managed
 interface Tools {
-    //ModelMap<VersionList> getVersionList()
     List<String> getVersions()
     void setVersions(List<String> versions)
-    //void setVersions(ModelMap<Versions> versions)
 }
 
 @Managed
 interface Vendor {
     ModelMap<Tools> getTools()
-    //void setTools(ModelMap<Tools> tools)
 }
 
 class Vendor1Plugin extends RuleSource {
